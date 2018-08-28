@@ -11,6 +11,10 @@
 그 결과, 공급자가 쉽게 기름을 조작할 수 없는 시스템을 고안해 냈다. 주유소에서 기름을 주입하고 관리할 때 발생하는 데이터(기름의 성분, 수위)들을 블록체인에 기록하여 조작이 어렵고, 기록된 데이터를  관계자들이 즉시 확인할 수 있는 투명한 주유소 시스템을 제시한다. 시스템에 사용된 기술은 **이더리움 블록체인과 스마트 컨트랙트**다.
 
 ### 사용방법
+
+아두이노와 라즈베리파이 등 기본 셋팅을 마친 후, 소스코드를 다운받아 `app.js` 가 위치한 폴더 위치에서 아래와 같은 명령어로 필요한 모듈을 받는다.
 ```
 npm install
 ```
+해당 위치에서 `node app.js` 라는 명령어로 서버를 구동시키고 public 폴더 안에 위치한 **index.html**을 localhost:portNumber 으로 접속한다.
+만약, 제대로 파일이 열리지 않는다면 **[Web Server for Chrome]( https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb )** 에서 확장팩을 받아 사용한다
