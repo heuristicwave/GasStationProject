@@ -1,8 +1,6 @@
 const Path = require('path');
 const Hapi = require('hapi');
 const Inert = require('inert');
-
-
 const Web3 = require('web3');
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
@@ -24,7 +22,6 @@ console.log(myContract.options);
 
 //Reading from Arduino
 const parser = port.pipe(new Readline({delimiter: '\r\n'}));
-
 
 const server = new Hapi.Server({
     port: 3000,
@@ -85,9 +82,7 @@ const provision = async () => {
                     }
                 }
             });
-            
             return 0;
-
         }
      });
     await server.start();
