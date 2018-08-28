@@ -286,7 +286,7 @@
         $('#machineState'+m.machine).progress({ percent: percent*100 });
 
         if(_timerCount[m.machine]===thisMachine.nowRefuelingAmout){
-          console.log('hahahah');
+          console.log('test');
           clearInterval(_timer[m.machine]);
           $("#machine"+m.machine+"_start").html('START');
           $("#maximum"+m.machine).val('0');

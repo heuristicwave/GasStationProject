@@ -22,7 +22,7 @@ var myContract = new web3.eth.Contract(ABI, 'CA', {
 console.log('Got contract instance');
 console.log(myContract.options);
 
-//Reading from Ardu
+//Reading from Arduino
 const parser = port.pipe(new Readline({delimiter: '\r\n'}));
 
 
