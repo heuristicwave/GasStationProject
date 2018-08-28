@@ -1,0 +1,175 @@
+<!--
+ Copyright 2016 Google Inc.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="canonical" href="https://weather-pwa-sample.firebaseapp.com/final/">
+  <link rel="stylesheet" type="text/css" href="/css/Semantic-UI-Alert.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+  <title>gasStasion</title>
+  <link rel="stylesheet" type="text/css" href="css/semantic.css">
+  <link rel="stylesheet" type="text/css" href="css/semantic.min.input.css">
+  <meta name="msapplication-TileImage" content="images/icons/icon-144x144.png">
+  <meta name="msapplication-TileColor" content="#2F3BA2">
+
+</head>
+
+<body cz-shortcut-listen="true">
+   <div class="ui ui container">
+      <br>
+      <h1 class="ui center aligned header">Gas station Event Check</h1>
+    <br>
+
+    <div class="ui two column grid">
+      <div class="column">
+        <div class="ui raised segment">
+          <a class="ui red ribbon label">FuelingEvent</a>
+          <div id="FuelingEvent"></div>
+          <p></p>
+          <a class="ui yellow ribbon label">CleaningEvent</a>
+          <div id="CleaningEvent"></div>
+          <p></p>
+          <a class="ui green ribbon label">gasTankCheckedEvent</a>
+          <div id="gasTankCheckedEvent"></div>
+          <p></p>
+          <a class="ui blue ribbon label">abnormalTankCheckedEvent</a>
+          <div id="abnormalTankCheckedEvent"></div>
+          <p></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </body>
+
+   <script src="/js/jquery.min.js"></script>
+   <script src="/js/semantic.js"></script>
+  <script type="text/javascript" src="/js/Semantic-UI-Alert.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bignumber.js/bignumber.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>  
+   <script type="text/javascript">
+  
+  const contractAddress = "0xE5006916Ad70Ca9c440eE74860C3853674Bf0e88";
+  const contractABI = [ { "constant": false, "inputs": [ { "name": "_sensoredTankAmount", "type": "uint256" } ], "name": "stopCleaning", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0x40f41099" }, { "constant": false, "inputs": [ { "name": "_filledOutAmount", "type": "uint256" }, { "name": "_sensoredTankAmount", "type": "uint256" } ], "name": "checkGasTankAmount", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0x4ca0fe7a" }, { "constant": false, "inputs": [], "name": "stopFueling", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0x4cb40d6d" }, { "constant": false, "inputs": [], "name": "startCleaning", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0x7c080cd8" }, { "constant": false, "inputs": [ { "name": "_emptyingAmount", "type": "uint256" } ], "name": "devEmptyFuel", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0x8e3b9997" }, { "constant": true, "inputs": [], "name": "gasTankType", "outputs": [ { "name": "", "type": "string", "value": "DISEL" } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0x901e6469" }, { "constant": true, "inputs": [], "name": "Fueling", "outputs": [ { "name": "", "type": "bool", "value": false } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0x9ae770e5" }, { "constant": false, "inputs": [ { "name": "_fillingFuelAmount", "type": "uint256" } ], "name": "startFueling", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0x9b55f8b2" }, { "constant": true, "inputs": [], "name": "EmptyingAmount", "outputs": [ { "name": "", "type": "uint256", "value": "0" } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0x9cc00c4a" }, { "constant": false, "inputs": [ { "name": "_range", "type": "uint256" } ], "name": "setErrorRange", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0x9f41e2ca" }, { "constant": true, "inputs": [], "name": "newFuelAmount", "outputs": [ { "name": "", "type": "uint256", "value": "0" } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0xa71b48a0" }, { "constant": true, "inputs": [], "name": "beforeFuelAmount", "outputs": [ { "name": "", "type": "uint256", "value": "1000" } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0xc7d25eca" }, { "constant": true, "inputs": [], "name": "gasStation", "outputs": [ { "name": "", "type": "string", "value": "SK_ENERGY" } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0xdbb602fd" }, { "constant": true, "inputs": [], "name": "Emptying", "outputs": [ { "name": "", "type": "bool", "value": false } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0xfdd58722" }, { "inputs": [ { "name": "_gasStationName", "type": "string", "index": 0, "typeShort": "string", "bits": "", "displayName": "&thinsp;<span class=\"punctuation\">_</span>&thinsp;gas Station Name", "template": "elements_input_string", "value": "SK_ENERGY" }, { "name": "_gasTankType", "type": "string", "index": 1, "typeShort": "string", "bits": "", "displayName": "&thinsp;<span class=\"punctuation\">_</span>&thinsp;gas Tank Type", "template": "elements_input_string", "value": "DISEL" } ], "payable": false, "stateMutability": "nonpayable", "type": "constructor", "signature": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "_gasStationName", "type": "string" }, { "indexed": false, "name": "_gasTankType", "type": "string" }, { "indexed": false, "name": "_fillingFuelAmount", "type": "uint256" }, { "indexed": false, "name": "_statusMessage", "type": "string" } ], "name": "FuelingEvent", "type": "event", "signature": "0x74a9a6c567708bb12aa9f37f2ae0416136528ad2ea8b3eac59d958f3adfc0739" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "_gasStationName", "type": "string" }, { "indexed": false, "name": "_gasTankType", "type": "string" }, { "indexed": false, "name": "_emptyingFuelAmount", "type": "uint256" }, { "indexed": false, "name": "_statusMessage", "type": "string" } ], "name": "CleaningEvent", "type": "event", "signature": "0x485671fd278ed54e7f89122a9195f6ef540ca60dac48c384142f5c2da49ca1f6" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "_gasStationName", "type": "string" }, { "indexed": false, "name": "_gasTankType", "type": "string" }, { "indexed": false, "name": "_statusMessage", "type": "string" } ], "name": "gasTankCheckedEvent", "type": "event", "signature": "0x516e5cafa09bac8a93d49056ffc757a345c94fc72514f7419a268962ce8cf758" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "_gasStationName", "type": "string" }, { "indexed": false, "name": "_gasTankType", "type": "string" }, { "indexed": false, "name": "_statusMessage", "type": "string" }, { "indexed": false, "name": "_abnormalAmount", "type": "uint256" } ], "name": "abnormalTankCheckedEvent", "type": "event", "signature": "0x597a6675a159b1b27625328c2ed88b0ace0ba484f5f0fe3cc3c407ae23f8e21f" } ];
+
+    console.log('eventTest');
+
+            $(document).ready(function(){
+            // console.log(window.web3);
+            // if (typeof window.web3 !== "undefined") {
+//                web3js = new Web3(window.web3.currentProvider);
+//                console.log("Connect to Mist/MetaMask");
+            // } else {
+             web3js = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+//            web3js = new Web3(new Web3.providers.HttpProvider("http://localhost:8555"));
+            console.log("Connect to Localhost");
+            // }
+
+            web3js.eth.getBlockNumber(function(error, result) {
+                if (error != null) {
+                    document.getElementById("current_account").textContent = "접속 ERROR : 블록 정보를 가져올 수 없습니다.";
+                    baseBlock = -1;
+                    accounts = null;
+                }
+                else {
+                    baseBlock = result;
+                    web3js.eth.getAccounts(function(error, result) {
+                        console.log(result);
+                        if (error != null) {
+                            document.getElementById("current_account").textContent = "접속 ERROR : 계정 정보를 가져올 수 없습니다.";
+                            accounts = null;
+                        } else {
+
+                            accounts = result;//계정 잘 가져옴
+                            GasCheck = web3js.eth.contract(contractABI).at(contractAddress);
+
+                            console.log(accounts);
+
+                            watchStart();
+
+                            // GAS STATION에서  가격 가져오기
+                            $.getJSON('https://ethgasstation.info/json/ethgasAPI.json', function(data) {
+                                $("#gas_price").val(data['safeLow'] / 10);
+                            });
+
+                            $(".tokenValue").val(0);
+                        }
+                    });
+                }
+            });
+        });
+
+   function watchStart() {
+        web3js.eth.defaultAccount=web3js.eth.coinbase;
+
+        var getFuelingEvent = GasCheck.FuelingEvent(null, {fromBlock:0});
+
+        getFuelingEvent.watch(function(error, result) {
+            if (!error) {
+                console.log("주유소 이름: "+result.args._gasStationName);
+                console.log("기름 종류: "+result.args._gasTankType);
+                console.log("체워지는 양: "+result.args._fillingFuelAmount);
+                console.log("이벤트 상태: "+result.args._statusMessage);
+                document.getElementById(FuelingEvent)
+                $("#FuelingEvent").text(result._gasStationName+'주유소 에서'+result._gasTankType+'기름이'+result._fillingFuelAmount+'만큼 증가하고 있습니다.' + result._statusMessage);
+            } else
+                console.log(error);
+            });
+
+        var getCleaningEvent = GasCheck.CleaningEvent(null, {fromBlock:0});
+        getCleaningEvent.watch(function(error, result) {
+            if (!error) {
+                console.log("주유소 이름: "+result.args._gasStationName);
+                console.log("기름 종류: "+result.args._gasTankType);
+                console.log("기름 비우는 양: "+result.args._emptyingFuelAmount);
+                console.log("이벤트 상태: "+result.args._statusMessage);
+                $("#CleaningEvent").text(result[0]+'번째 탱크에서'+result[1]+'이'+result[2]+'만큼 있습니다.' +result[3]);
+            } else
+                console.log(error);
+            });
+
+        var getGasTankCheckedEvent = GasCheck.gasTankCheckedEvent(null, {fromBlock:0});
+        getGasTankCheckedEvent.watch(function(error, result) {
+            if (!error) {
+                console.log("주유소 이름: "+result.args._gasStationName);
+                console.log("기름 종류: "+result.args._gasTankType);
+                console.log("이벤트 상태: "+result.args._statusMessage);
+                $("#gasTankCheckedEvent").text(result[0]+'번째 탱크에서'+result[1]+'이'+result[2]);
+            } else
+                console.log(error);
+            });
+
+        var getAbnormalTankCheckedEvent = GasCheck.abnormalTankCheckedEvent(null, {fromBlock:0});
+        getAbnormalTankCheckedEvent.watch(function(error, result) {
+            if (!error) {
+                console.log("주유소 이름: "+result.args._gasStationName);
+                console.log("기름 종류: "+result.args._gasTankType);
+                console.log("이상 양: "+result.args._abnormalAmount);
+                console.log("이벤트 상태: "+result.args._statusMessage);
+                $("#abnormalTankCheckedEvent").text(result[0]+'번째 탱크에서'+result[1]+'이'+result[2] +result[3]);
+            } else
+                console.log(error);
+            });
+    
+    }
+
+  </script>
+</body>
+</html>
