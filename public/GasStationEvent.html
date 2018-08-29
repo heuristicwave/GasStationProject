@@ -19,8 +19,6 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="canonical" href="https://weather-pwa-sample.firebaseapp.com/final/">
-  <link rel="stylesheet" type="text/css" href="/css/Semantic-UI-Alert.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="/manifest.json">
   <title>gasStasion</title>
@@ -71,56 +69,10 @@
 
     console.log('eventTest');
 
-            $(document).ready(function(){
-            // console.log(window.web3);
-            // if (typeof window.web3 !== "undefined") {
-//                web3js = new Web3(window.web3.currentProvider);
-//                console.log("Connect to Mist/MetaMask");
-            // } else {
-             web3js = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-//            web3js = new Web3(new Web3.providers.HttpProvider("http://localhost:8555"));
-            console.log("Connect to Localhost");
-            // }
+    watchStart();
 
-            web3js.eth.getBlockNumber(function(error, result) {
-                if (error != null) {
-                    document.getElementById("current_account").textContent = "접속 ERROR : 블록 정보를 가져올 수 없습니다.";
-                    baseBlock = -1;
-                    accounts = null;
-                }
-                else {
-                    baseBlock = result;
-                    web3js.eth.getAccounts(function(error, result) {
-                        console.log(result);
-                        if (error != null) {
-                            document.getElementById("current_account").textContent = "접속 ERROR : 계정 정보를 가져올 수 없습니다.";
-                            accounts = null;
-                        } else {
-
-                            accounts = result;//계정 잘 가져옴
-                            GasCheck = web3js.eth.contract(contractABI).at(contractAddress);
-
-                            console.log(accounts);
-
-                            watchStart();
-
-                            // GAS STATION에서  가격 가져오기
-                            $.getJSON('https://ethgasstation.info/json/ethgasAPI.json', function(data) {
-                                $("#gas_price").val(data['safeLow'] / 10);
-                            });
-
-                            $(".tokenValue").val(0);
-                        }
-                    });
-                }
-            });
-        });
-
-   function watchStart() {
-        web3js.eth.defaultAccount=web3js.eth.coinbase;
-
+    function watchStart() {
         var getFuelingEvent = GasCheck.FuelingEvent(null, {fromBlock:0});
-
         getFuelingEvent.watch(function(error, result) {
             if (!error) {
                 console.log("주유소 이름: "+result.args._gasStationName);
