@@ -19,8 +19,6 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="canonical" href="https://weather-pwa-sample.firebaseapp.com/final/">
-  <link rel="stylesheet" type="text/css" href="/css/Semantic-UI-Alert.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="/manifest.json">
   <title>gasStasion</title>
@@ -109,6 +107,7 @@
 
     console.log('eventTest');
 
+<<<<<<< HEAD
             $(document).ready(function(){
              web3js = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
             console.log("Connect to Localhost");
@@ -151,6 +150,13 @@
         console.log(GasCheck2);
         //Filling Event
         getFuelingEvent1.watch(function(error, result) {
+=======
+    watchStart();
+
+    function watchStart() {
+        var getFuelingEvent = GasCheck.FuelingEvent(null, {fromBlock:0});
+        getFuelingEvent.watch(function(error, result) {
+>>>>>>> b5e4c7ed699b73215c1cb639557049c4a2430fb8
             if (!error) {
                 console.log("Gas Station Name: "+result.args._gasStationName);
                 console.log("Gas Tank Type: "+result.args._gasTankType);
